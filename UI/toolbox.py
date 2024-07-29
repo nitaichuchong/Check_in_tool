@@ -67,7 +67,7 @@ class Ui_Form(object):
         self.tabWidget.addTab(self.tab_3, "")
 
         self.retranslateUi(Form)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

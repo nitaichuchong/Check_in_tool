@@ -44,6 +44,12 @@ class Ui_Form(object):
         self.label_time.setFont(font)
         self.label_time.setText("")
         self.label_time.setObjectName("label_time")
+        self.pushButton_calendar = QtWidgets.QPushButton(Form)
+        self.pushButton_calendar.setGeometry(QtCore.QRect(340, 390, 93, 28))
+        self.pushButton_calendar.setObjectName("pushButton_calendar")
+        self.pushButton_test = QtWidgets.QPushButton(Form)
+        self.pushButton_test.setGeometry(QtCore.QRect(460, 390, 121, 28))
+        self.pushButton_test.setObjectName("pushButton_test")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -53,3 +59,5 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "戒色打卡器"))
         self.button_clock_in.setText(_translate("Form", "今日打卡"))
         self.label_clocked.setText(_translate("Form", "你已戒色第0天！"))
+        self.pushButton_calendar.setText(_translate("Form", "打开日历"))
+        self.pushButton_test.setText(_translate("Form", "打开测试工具箱"))

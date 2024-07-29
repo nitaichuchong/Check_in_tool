@@ -12,9 +12,9 @@ from UI.toolbox import Ui_Form
 from config.settings import DATABASE_ROOT
 
 
-class UI_Window(QtWidgets.QMainWindow):
+class Toolbox_Window(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
-        super(UI_Window, self).__init__(parent)
+        super(Toolbox_Window, self).__init__(parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
@@ -128,6 +128,6 @@ class UI_Window(QtWidgets.QMainWindow):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    ui = UI_Window()
+    ui = Toolbox_Window()
     ui.show()
     sys.exit(app.exec_())
