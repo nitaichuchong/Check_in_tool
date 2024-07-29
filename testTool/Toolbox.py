@@ -23,6 +23,9 @@ class Toolbox_Window(QtWidgets.QMainWindow):
         self.cur = self.con.cursor()
         self.create_table()
         self.init_comboBox()
+        # 初始化测试数据的时间范围，默认为当前日期到十天后
+        self.ui.dateTimeEdit_start.setDateTime(datetime.now())
+        self.ui.dateTimeEdit_end.setDateTime(datetime.now() + timedelta(days=10))
 
         self.init_slots()
 
@@ -34,6 +37,8 @@ class Toolbox_Window(QtWidgets.QMainWindow):
         self.ui.pushButton_generate.clicked.connect(self.create_test_data)
         self.ui.pushButton_update.clicked.connect(self.read_and_format)
         self.ui.pushButton_delete.clicked.connect(self.delete_table)
+        self.ui.dateTimeEdit_start.dateTimeChanged.connect(self.dateTimeEdit_start_check)
+        self.ui.dateTimeEdit_end.dateTimeChanged.connect(self.dateTimeEdit_end_check)
 
     def create_table(self):
         """创建表"""
@@ -46,38 +51,44 @@ class Toolbox_Window(QtWidgets.QMainWindow):
         self.con.commit()
 
     def create_test_data(self):
-        """创建测试数据，生成的数据量和数据范围都由控件的数字决定
+        """创建测试数据，生成的数据范围由控件决定
         :param
-            data_size：要生成的数据量
-            left：随机数范围的下限，在此表示最多往前多少天
-            right：随机数范围的上限，在此表示最多往后多少天
         """
         # 为了防止删除表后出现错误，先调用一次表创建
         self.create_table()
 
-        # 用 or 给一个默认值，防止空值导致的异常
-        data_size = int(self.ui.lineEdit_data_size.text()) or 10
-        left = int(self.ui.spinBox_left.text()) or -2
-        right = int(self.ui.spinBox_right.text()) or -2
+        '''先获取两个 dateTimeEdit 中的值，注意这里为 QDateTIme 对象
+        也有自带的方法 toPyDateTime() 来转换为 DateTime 对象，如下：        
+        date_start = self.ui.dateTimeEdit_start.dateTime().toPyDateTime()
+        data_end = self.ui.dateTimeEdit_end.dateTime().toPyDateTime()
+        但是想多用一下新方法试试'''
+        date_start = self.ui.dateTimeEdit_start.dateTime()
+        data_end = self.ui.dateTimeEdit_end.dateTime()
 
-        for i in range(data_size):
-            rand_num = random.randint(left, right)  # 生成随机数
-            # current_time = datetime.now().date()
-            current_time = datetime.now()  # 获取系统时间
-            # 将系统时间 + timedelta（随机数）作为随机的时间
-            # timedelta 默认参数为天数，即 rand_num 表示随机天数的范围
-            test_data = current_time + timedelta(rand_num)
-            test_data = test_data.strftime('%Y-%m-%d %H:%M:%S')
+        # 设置 i 作为日期增加的天数
+        i = 0
+        while True:
+            # addDays(i) 即可逐天处理，直至满足条件
+            current_time = date_start.addDays(i)
+            # 若当前时间的 date 已跟终止时间一致，说明满足退出循环的条件，结束生成
+            if current_time.date() == data_end.date():
+                break
+            i += 1
+            # 转换为符合格式要求的 DateTime 对象，QDateTime 对象没有合适的方法
+            current_time = current_time.toPyDateTime().strftime('%Y-%m-%d %H:%M:%S')
             # base64 只接受 byte 类型，因此将数据转换为 utf-8 字节串后进行 base64 编码
-            b64_data = base64.b64encode(test_data.encode('utf-8'))
+            b64_data = base64.b64encode(current_time.encode('utf-8'))
 
             self.cur.execute("INSERT INTO my_database (datatime) VALUES (?);", (b64_data,))
             self.con.commit()
 
         QMessageBox.information(self, '操作提示', '已生成测试数据！去更新看看吧！')
 
+
     def read_and_format(self):
         """从表中读取数据并还原，更多注释请看 DatabaseHandler 中的正式版本"""
+        # 每次更新前都先清空原先内容
+        self.ui.textEdit.clear()
         con = sqlite3.connect(DATABASE_ROOT)
         cur = con.cursor()
 
@@ -92,7 +103,8 @@ class Toolbox_Window(QtWidgets.QMainWindow):
             decoded_bytes = base64.b64decode(time_data[0]).decode('utf-8')
 
             self.ui.textEdit.append(decoded_bytes)
-            self.ui.textEdit.append("已于 " + decoded_bytes + " 完成打卡")
+
+        QMessageBox.information(self, '操作提示', '已更新完毕！')
 
         # 若 textEdit 中为空（或只有 空格/空行 ），则表示当前表中没有数据
         if not self.ui.textEdit.toPlainText().strip():
@@ -110,6 +122,18 @@ class Toolbox_Window(QtWidgets.QMainWindow):
         tables = [row[0] for row in res.fetchall()]
         for table in tables:
             self.ui.comboBox.addItem(table)
+
+    def dateTimeEdit_start_check(self):
+        """检查起始时间是否符合要求"""
+        if self.ui.dateTimeEdit_start.date() >= self.ui.dateTimeEdit_end.date():
+            QMessageBox.information(self, '时间异常！', '你的起始时间已经 >= 终止时间了，已重置为默认值')
+            self.ui.dateTimeEdit_start.setDate(datetime.now().date())
+
+    def dateTimeEdit_end_check(self):
+        """检查终止时间是否符合要求"""
+        if self.ui.dateTimeEdit_end.date() <= self.ui.dateTimeEdit_start.date():
+            QMessageBox.information(self, '时间异常！', '你的终止时间已经 <= 起始时间了，已重置为默认值')
+            self.ui.dateTimeEdit_end.setDate(datetime.now().date() + timedelta(days=10))
 
     def delete_table(self):
         """删除指定表"""

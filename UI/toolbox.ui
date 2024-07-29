@@ -42,78 +42,17 @@
       <string>生成测试数据</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>80</y>
-       <width>231</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>需要生成的数据量，请输入正整数</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_data_size">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>120</y>
-       <width>113</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>10</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
        <x>30</x>
        <y>170</y>
-       <width>111</width>
+       <width>191</width>
        <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>天数的波动范围</string>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="spinBox_left">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>250</y>
-       <width>46</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="minimum">
-      <number>-10</number>
-     </property>
-     <property name="maximum">
-      <number>0</number>
-     </property>
-     <property name="value">
-      <number>-2</number>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="spinBox_right">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>250</y>
-       <width>46</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="maximum">
-      <number>10</number>
-     </property>
-     <property name="value">
-      <number>2</number>
+      <string>请设置测试数据的时间范围</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_3">
@@ -126,7 +65,40 @@
       </rect>
      </property>
      <property name="text">
-      <string>左边限制为-10到0，右边限制为0到10</string>
+      <string>左为起始时间，右为终止时间</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>290</y>
+       <width>471</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>请尽量遵循合理操作，目前误操作处理未完善，请勿乱改导致未知错误</string>
+     </property>
+    </widget>
+    <widget class="QDateTimeEdit" name="dateTimeEdit_start">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>240</y>
+       <width>194</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QDateTimeEdit" name="dateTimeEdit_end">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>240</y>
+       <width>194</width>
+       <height>22</height>
+      </rect>
      </property>
     </widget>
    </widget>
