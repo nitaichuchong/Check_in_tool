@@ -5,14 +5,14 @@ import sys
 from datetime import datetime, timedelta
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import QCoreApplication, pyqtSignal
 from PyQt5.QtWidgets import QMessageBox
 
 from UI.toolbox import Ui_Form
 from config.settings import DATABASE_ROOT
 
 
-class Toolbox_Window(QtWidgets.QMainWindow):
+class Toolbox_Window(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(Toolbox_Window, self).__init__(parent)
         self.ui = Ui_Form()
@@ -28,6 +28,9 @@ class Toolbox_Window(QtWidgets.QMainWindow):
         self.ui.dateTimeEdit_end.setDateTime(datetime.now() + timedelta(days=10))
 
         self.init_slots()
+
+        # 定义一个无参数的信号，用以在主界面连接槽函数进行处理，若并非从主界面打开则用不上
+        self.closedSignal = pyqtSignal()
 
         # 关闭软件时触发事件，关闭数据库连接
         QCoreApplication.instance().aboutToQuit.connect(self.on_about_to_quit)
@@ -54,12 +57,7 @@ class Toolbox_Window(QtWidgets.QMainWindow):
         self.con.commit()
 
     def create_test_data(self):
-        """创建测试数据，生成的数据范围由控件决定
-        :param
-        """
-        # 为了防止删除表后出现错误，先调用一次表创建
-        self.create_table()
-
+        """创建测试数据，生成的数据范围由控件决定"""
         '''先获取两个 dateTimeEdit 中的值，注意这里为 QDateTIme 对象
         也有自带的方法 toPyDateTime() 来转换为 DateTime 对象，如下：        
         date_start = self.ui.dateTimeEdit_start.dateTime().toPyDateTime()
@@ -128,6 +126,8 @@ class Toolbox_Window(QtWidgets.QMainWindow):
 
     def init_comboBox_delete(self):
         """初始化 comboBox，将数据库中存在的表添加到 comboBox 选项中"""
+        # 先清除原选项
+        self.ui.comboBox_delete.clear()
         # sqlite_master 和 sqlite_sequence 都是 sqlite 自行创建的表，因此应当忽略
         # 从 sqlite_master 进行 SELECT 操作本身就忽略掉了 sqlite_master 表
         sql = '''
@@ -157,10 +157,12 @@ class Toolbox_Window(QtWidgets.QMainWindow):
         table_name = self.ui.comboBox_delete.currentText()
         self.cur.execute(f"drop table if exists {table_name};")
         self.con.commit()
+        # 为了防止删除表后出现错误，先调用一次表创建
+        self.create_table()
+        QMessageBox.information(self, '操作提示',
+                                '你已删除指定表！（但实际上等同清空表，反正也没有第二张表，所以你看起来好像没删）')
         # 完成一次删除后要更新 comboBox 的选项
         self.init_comboBox_delete()
-
-        QMessageBox.information(self, '操作提示', '你已删除指定表！（但实际上等同清空表）')
 
     def on_about_to_quit(self):
         self.con.close()

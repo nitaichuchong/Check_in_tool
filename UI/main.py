@@ -50,6 +50,9 @@ class Ui_Form(object):
         self.pushButton_test = QtWidgets.QPushButton(Form)
         self.pushButton_test.setGeometry(QtCore.QRect(460, 390, 121, 28))
         self.pushButton_test.setObjectName("pushButton_test")
+        self.commandLinkButton = QtWidgets.QCommandLinkButton(Form)
+        self.commandLinkButton.setGeometry(QtCore.QRect(330, 10, 222, 48))
+        self.commandLinkButton.setObjectName("commandLinkButton")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -61,3 +64,4 @@ class Ui_Form(object):
         self.label_clocked.setText(_translate("Form", "你已戒色第0天！"))
         self.pushButton_calendar.setText(_translate("Form", "打开日历"))
         self.pushButton_test.setText(_translate("Form", "打开测试工具箱"))
+        self.commandLinkButton.setText(_translate("Form", "本项目GitHub地址"))

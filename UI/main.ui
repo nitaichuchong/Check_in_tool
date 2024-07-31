@@ -121,6 +121,19 @@
     <string>打开测试工具箱</string>
    </property>
   </widget>
+  <widget class="QCommandLinkButton" name="commandLinkButton">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>10</y>
+     <width>222</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>本项目GitHub地址</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

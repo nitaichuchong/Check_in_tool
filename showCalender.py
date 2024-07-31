@@ -3,20 +3,24 @@ import sys
 from PyQt5 import QtWidgets
 from UI.calendar import Ui_Form
 from utils.calender_check import init_comboBox_year_and_month, button_enable_check, calendar_for_current_month, \
-    calendar_change
+    calendar_change, check_open
 
 
-class Calender_Window(QtWidgets.QMainWindow):
+class Calender_Window(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(Calender_Window, self).__init__(parent)
-        self.on_about_to_quit = None
+        # 先检查是否能正常打开日历，不能则直接抛出异常阻止
+        flag = check_open()
+        if not flag:
+            raise ValueError("没有数据打开不了日历")
+
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
         # 必须先初始化的一些功能，具体说明请看对应函数的注释
         init_comboBox_year_and_month(self)
         button_enable_check(self)
         calendar_for_current_month(self)
-
         self.init_slots()
 
     def init_slots(self):

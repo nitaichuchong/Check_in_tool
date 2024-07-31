@@ -4,9 +4,17 @@ from datetime import datetime, timedelta
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox
 
 from DatabaseHandler import read_and_format
+
+
+def check_open():
+    """简单的检查目前是否有数据"""
+    time_list, _ = read_and_format()
+    if not time_list:
+        return False
+    return True
 
 
 def init_comboBox_year_and_month(self):
@@ -144,7 +152,7 @@ def month_change_last(self, year, month):
         month = 12
         year -= 1
         # 通过 findText 查找对应的 index，以方便修改
-        index = self.ui.comboBox_year.findText(year)
+        index = self.ui.comboBox_year.findText(str(year))
         # 若 ！= -1，则表示能找到，那么就将目前 index 变更为目标 index 即可
         if index != -1:
             self.ui.comboBox_year.setCurrentIndex(index)
@@ -164,7 +172,7 @@ def month_change_next(self, year, month):
         month = 1
         year += 1
 
-        index = self.ui.comboBox_year.findText(year)
+        index = self.ui.comboBox_year.findText(str(year))
         if index != -1:
             self.ui.comboBox_year.setCurrentIndex(index)
 
