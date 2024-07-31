@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -32,40 +32,19 @@
     <widget class="QPushButton" name="pushButton_generate">
      <property name="geometry">
       <rect>
-       <x>360</x>
-       <y>180</y>
-       <width>101</width>
-       <height>41</height>
+       <x>350</x>
+       <y>170</y>
+       <width>121</width>
+       <height>51</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>生成测试数据</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>80</y>
-       <width>231</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>需要生成的数据量，请输入正整数</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_data_size">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>120</y>
-       <width>113</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>10</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_2">
@@ -73,47 +52,12 @@
       <rect>
        <x>30</x>
        <y>170</y>
-       <width>111</width>
+       <width>191</width>
        <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>天数的波动范围</string>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="spinBox_left">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>250</y>
-       <width>46</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="minimum">
-      <number>-10</number>
-     </property>
-     <property name="maximum">
-      <number>0</number>
-     </property>
-     <property name="value">
-      <number>-2</number>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="spinBox_right">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>250</y>
-       <width>46</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="maximum">
-      <number>10</number>
-     </property>
-     <property name="value">
-      <number>2</number>
+      <string>请设置测试数据的时间范围</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_3">
@@ -126,7 +70,149 @@
       </rect>
      </property>
      <property name="text">
-      <string>左边限制为-10到0，右边限制为0到10</string>
+      <string>左为起始时间，右为终止时间</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>290</y>
+       <width>471</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>请尽量遵循合理操作，目前误操作处理未完善，请勿乱改导致未知错误</string>
+     </property>
+    </widget>
+    <widget class="QDateTimeEdit" name="dateTimeEdit_start">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>240</y>
+       <width>194</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QDateTimeEdit" name="dateTimeEdit_end">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>240</y>
+       <width>194</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>421</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>是否需要随机中断？若你想保持测试数据连续则请勿勾选！</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_random">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>80</y>
+       <width>87</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <item>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>3</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>4</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>5</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>6</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>7</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>8</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>9</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>10</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>110</y>
+       <width>441</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>从 1 到 10 表示随机强度，1 强度最低，10 强度最高</string>
      </property>
     </widget>
    </widget>
@@ -162,7 +248,7 @@
     <attribute name="title">
      <string>整表删除</string>
     </attribute>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="comboBox_delete">
      <property name="geometry">
       <rect>
        <x>30</x>

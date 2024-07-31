@@ -3,10 +3,15 @@ import sys
 import time
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QTimer, QCoreApplication
+from PyQt5.QtCore import QTimer, QCoreApplication, Qt, QUrl
+from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtWidgets import QMessageBox
 
 from DatabaseHandler import con, insert_database
 from UI.main import Ui_Form
+from showCalender import Calender_Window
+from testTool.Toolbox import Toolbox_Window
+from utils.calender_check import sorted_data
 from utils.main_check import check_first_time, check_textedit, check_button
 
 
@@ -31,12 +36,19 @@ class UI_Logic_Window(QtWidgets.QMainWindow):
         check_textedit(self, "init")
         check_button(self)
 
+        # 两个子窗口的初始化定义
+        self.test_form = None
+        self.calender_form = None
+
         # 关闭软件时触发事件，关闭数据库连接
         QCoreApplication.instance().aboutToQuit.connect(self.on_about_to_quit)
 
     def init_slots(self):
-        # button 按钮每次点击触发 clock_in 函数
+        """连接信号槽，点击按钮触发对应事件"""
         self.ui.button_clock_in.clicked.connect(self.clock_in)
+        self.ui.pushButton_calendar.clicked.connect(self.open_calendar)
+        self.ui.pushButton_test.clicked.connect(self.open_test)
+        self.ui.commandLinkButton.clicked.connect(self.open_website)
 
     def clock_in(self):
         """
@@ -58,6 +70,39 @@ class UI_Logic_Window(QtWidgets.QMainWindow):
         local_time = datetime.datetime.now()
         formatted_time = local_time.strftime('%Y-%m-%d %H:%M:%S')
         self.ui.label_time.setText(formatted_time)
+
+    def open_calendar(self):
+        """打开日历功能，用未定义的 Form 继承已在别处写好的窗口，
+        通过设置窗口的模态性（modal）来实现在子窗口打开时，
+        用户不能与主窗口或其他窗口交互的效果"""
+        # 没有数据时打开日历会抛异常，用 try except 进行处理
+        try:
+            self.calender_form = Calender_Window(self)
+            # 从主窗口打开日历应当每次都先清除缓存，否则日历不会更改，影响配合测试工具箱使用时的结果
+            sorted_data.cache_clear()
+            self.calender_form.setWindowModality(Qt.ApplicationModal)  # 设置为应用模态
+            self.calender_form.show()
+        except ValueError:
+            QMessageBox.information(self, '操作提示', '没有数据怎么画日历，打开不了，请先来点数据')
+
+    def open_test(self):
+        """打开测试工具箱功能，参考 open_calendar 的逻辑"""
+        self.test_form = Toolbox_Window(self)
+        self.test_form.setWindowModality(Qt.ApplicationModal)  # 设置为应用模态
+        self.test_form.finished.connect(self.close_test)  # finished 信号是 QDialog 特有的
+        self.test_form.show()
+
+    def close_test(self):
+        """关闭测试工具箱时应执行的操作"""
+        # 由于在工具箱内可能进行了新数据生成和删除表，因此需要更新打卡状况
+        check_textedit(self, "init")
+
+    @staticmethod
+    def open_website():
+        """打开本项目的 GitHub 地址"""
+        url = QUrl("https://github.com/nitaichuchong/Check_in_tool")
+        if not QDesktopServices.openUrl(url):
+            print("Failed to open URL:", url.toString())
 
     @staticmethod
     def on_about_to_quit():

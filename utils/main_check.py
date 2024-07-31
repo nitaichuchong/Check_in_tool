@@ -24,6 +24,8 @@ def check_textedit(self, arg):
     # arg == "init" 时为打开软件时的初始化，将所有内容以遍历方式追加到 textEdit 中
     # arg == "update" 时为每次点击按钮时追加的内容，因此只需追加最新的 message_list[-1]
     if arg == "init":
+        # 先做一次清理
+        self.ui.textEdit.clear()
         for r in message_list:
             self.ui.textEdit.append(r)
     elif arg == "update":
@@ -58,9 +60,9 @@ def check_button(self):
     """
     # 获取日期列表，并忽略另一返回值列表
     time_list, _ = read_and_format()
-    # 若数据量不为 0，即并非第一次使用时，通过比较系统时间和最新的数据，判断是否为同一天重复打卡
+    # 若数据量不为 0，即并非第一次使用时，通过比较系统时间是否存在于已读取数据中，判断是否为重复打卡
     # 若检查为重复打卡则将 button 设置为 disabled 并提示”今日已打卡“
     if len(time_list) != 0:
-        if str(date.today()) == time_list[-1]:
+        if str(date.today()) in time_list:
             self.ui.button_clock_in.setDisabled(True)
             self.ui.button_clock_in.setText("今日已打卡")
