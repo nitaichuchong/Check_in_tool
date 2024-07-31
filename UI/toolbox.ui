@@ -32,11 +32,16 @@
     <widget class="QPushButton" name="pushButton_generate">
      <property name="geometry">
       <rect>
-       <x>360</x>
-       <y>180</y>
-       <width>101</width>
-       <height>41</height>
+       <x>350</x>
+       <y>170</y>
+       <width>121</width>
+       <height>51</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>生成测试数据</string>
@@ -90,6 +95,11 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
     </widget>
     <widget class="QDateTimeEdit" name="dateTimeEdit_end">
      <property name="geometry">
@@ -99,6 +109,110 @@
        <width>194</width>
        <height>22</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>421</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>是否需要随机中断？若你想保持测试数据连续则请勿勾选！</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_random">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>80</y>
+       <width>87</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <item>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>3</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>4</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>5</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>6</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>7</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>8</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>9</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>10</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>110</y>
+       <width>441</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>从 1 到 10 表示随机强度，1 强度最低，10 强度最高</string>
      </property>
     </widget>
    </widget>
@@ -134,7 +248,7 @@
     <attribute name="title">
      <string>整表删除</string>
     </attribute>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="comboBox_delete">
      <property name="geometry">
       <rect>
        <x>30</x>
