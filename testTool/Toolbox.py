@@ -84,7 +84,6 @@ class Toolbox_Window(QtWidgets.QMainWindow):
 
         QMessageBox.information(self, '操作提示', '已生成测试数据！去更新看看吧！')
 
-
     def read_and_format(self):
         """从表中读取数据并还原，更多注释请看 DatabaseHandler 中的正式版本"""
         # 每次更新前都先清空原先内容
